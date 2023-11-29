@@ -1,0 +1,69 @@
+Executado uma aplicação com termina interativo
+	docker exec -it 9159619d96ec bash
+
+
+Ver processos em execução
+docker ps
+
+Mapeia porta utilizada no container
+docker port
+
+Cria uma porta dedicada em detached mode para um container
+docker -d -P some-image
+
+Cria uma porta <PC>:<CONTAINER> em detached mode para um container
+docker -d -p 8080:80 some-image
+
+docker inspect
+
+docker run -it ubuntu bash
+
+---Dockerfile---
+WORKDIR - Diretório de trabalho
+COPY . . (Diretório atual, Workdir dentro do container)
+RUN npm install (executa o npm install quando a imagem está criada)
+ENTRYPOINT npm start (quando o container for executado o comando executado será npm start)
+
+
+Gerando imagem apartir de dockerfile
+docker build -t lucasantana/appnode:1.0 .
+
+Remover todas as imagens de um container
+
+	docker container rm $(docker container ls -aq)
+	docker rmi $(docker images ls -aq) --force
+
+
+Persistindo dados:
+	Mount:
+		bind mound
+		docker run -it -v C:\testes ubuntu bash
+
+		docker run -it --mount type=bind,source=/home/lucas/testes, target=/app ubuntu bash
+
+	Volumes:
+		docker volume create meu-volume
+		docker volume ls
+
+		docker run -it -v meu-volume:/app ubuntu bash
+		docker run -it --mount source=meu-volume, target=/app ubuntu bash		
+		
+	Rede:
+		docker inspect
+		apt-get update
+		apt-get install iputils-ping -y
+
+		docker network create --driver bridge minha-bridge
+		docker run -it --name ubuntu1 --network minha-bridge ubuntu bash
+
+		docker run -it --name ubuntu1 --network minha-bridge ubuntu bash
+
+		docker run -d --network none ubuntu sleep 1d
+		ping pong
+
+		Rodando no host:
+			 docker run -d --network host aluradocker/app-node:1.0
+
+		Comunicando uma aplicação e um banco:
+			 docker run -d --network minha-bridge --name meu-mongo mongo:4.4.6
+			 docker run -d --network minha-bridge --name alurabooks -p 3000:3000 aluradocker/alura-books:1.0
